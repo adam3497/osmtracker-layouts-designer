@@ -165,7 +165,7 @@ public class Editor extends AppCompatActivity {
                                 })
                                 .create().show();
                         } catch (IOException e) {
-                        Toast.makeText(Editor.this,R.string.error_creating_message, Toast.LENGTH_LONG);
+                        Toast.makeText(Editor.this,R.string.error_creating_message, Toast.LENGTH_LONG).show();
                         e.printStackTrace();
                     }
                 }
@@ -292,7 +292,7 @@ public class Editor extends AppCompatActivity {
                         //Checking if the user changed the name or the image of the item
                         if( !currentGridItem.getItemName().equals(buttonName.getText().toString()) || currentGridItem.getImagePath() != imagePathTextView.getText().toString()) {
 
-                            Log.e("#", "Current name: "+ currentGridItem.getItemName() + " nombre en el edit text: "+ buttonName.getText().toString());
+                            Log.i("#", "Current name: "+ currentGridItem.getItemName() + " nombre en el edit text: "+ buttonName.getText().toString());
                             currentGridItem.setItemName(buttonName.getText().toString());
                             currentGridItem.setImagePath(imagePathTextView.getText().toString());
                             currentGridItem.setImageURI(currentUri);
@@ -365,33 +365,45 @@ public class Editor extends AppCompatActivity {
     // Is called when the user presses the Icon in the pop up
     public void selectImage(View view){
 
-        Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        /*Intent intent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.INTERNAL_CONTENT_URI);
+        intent.setType("image/*");*/
+        Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
-        startActivityForResult(intent, SELECT_IMAGE); // Start the activity waiting for a code as a response (SELECT_IMAGE)
+        if(intent.resolveActivity(getPackageManager())  != null){
+            Log.i(contextTag, "Opening the resolver to pick a image");
+            // Start the activity waiting for a code as a response (SELECT_IMAGE)
+            startActivityForResult(intent, SELECT_IMAGE);
+        }
+
     }
 
     // This method is called when the intent to open the gallery is finished or closed
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data){
+        Log.i(contextTag, "Receaving the result of the pick image in the onActivityResult method");
 
-        if (requestCode == SELECT_IMAGE){ // This is to indentIfy who returned the original requestCode
-            if (resultCode == Activity.RESULT_OK) { // If no error happened in the process
-                if(current_new_button_popup != null) showPathAndIcon(data.getData());
-            }
+        if (requestCode == SELECT_IMAGE && resultCode == RESULT_OK){ // This is to indentIfy who returned the original requestCode
+            Log.i(contextTag, "The select request code and the result are ok");
+            // If no error happened in the process
+            if(current_new_button_popup != null) showPathAndIcon(data.getData());
         }
     }
 
     // This method writes the image path on the pop up window and shows the icon selected by the user
     private void showPathAndIcon(Uri selectedImage){
         currentUri = selectedImage;
+        Log.i(contextTag, "Receaving the Uri in the showPathAndIcon mehtod");
+
         sample_url = (TextView)current_new_button_popup.findViewById(R.id.url_text_view);
         image_button = (ImageButton)current_new_button_popup.findViewById(R.id.imageButton);
 
         if (selectedImage != null && selectedImage.getPath() != null){
 
-            IMAGE_PATH = getPath(selectedImage);
+            Log.i(contextTag, "The selectedImage and path are not null: " + selectedImage.getPath());
+
+            IMAGE_PATH = selectedImage.getPath();
             sample_url.setText(IMAGE_PATH);
-            Log.e("Path", IMAGE_PATH);
+            Log.i("Path", IMAGE_PATH);
         }
 
         // Set the correct properties so the image is shown in the right way
