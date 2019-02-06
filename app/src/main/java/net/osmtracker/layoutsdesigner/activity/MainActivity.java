@@ -1,10 +1,13 @@
 package net.osmtracker.layoutsdesigner.activity;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.Settings;
@@ -12,6 +15,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.AppCompatSpinner;
+import android.transition.Explode;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +60,13 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Explode explode = new Explode();
+            explode.setDuration(500);
+            getWindow().setExitTransition(explode);
+        }
+
         setUpElemets();
     }
 
@@ -161,8 +172,13 @@ public class MainActivity extends AppCompatActivity
                         intent.putExtra(OsmtrackerLayoutsDesigner.Preferences.EXTRA_CHECKBOX_CAMERA, cbxCamera.isChecked());
                         intent.putExtra(OsmtrackerLayoutsDesigner.Preferences.EXTRA_CHECKBOX_NOTES, cbxNotes.isChecked());
                         intent.putExtra(OsmtrackerLayoutsDesigner.Preferences.EXTRA_CHECKBOX_VOICE_RECORDER, cbxVoiceRecorder.isChecked());
-                        startActivity(intent);
-                        finish();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                            startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+                        }
+                        else{
+                            startActivity(intent);
+                        }
+
                     }
                 })
                 .setNegativeButton(R.string.dialog_cancel, new DialogInterface.OnClickListener() {
@@ -335,17 +351,18 @@ public class MainActivity extends AppCompatActivity
             showPopup();
 
         } else if (id == R.id.nav_btn_action_about) {
-            openAboutActivity();
+            Intent intent = new Intent(MainActivity.this, AboutActivity.class);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivity(intent, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+            }
+            else{
+                startActivity(intent);
+            }
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-    }
-    private void openAboutActivity(){
-
-        startActivity(new Intent(getApplicationContext(), AboutActivity.class));
-
     }
 
 }

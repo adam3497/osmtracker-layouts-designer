@@ -5,5 +5,13 @@
         <item name="windowNoTitle">true</item>
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
         <item name="android:windowContentTransitions">true</item>
+
+        <!-- Estados Entrada-Salida  -->
+        <item name="android:windowEnterTransition">@transition/explode_transition</item>
+        <item name="android:windowExitTransition">@transition/explode_transition</item>
+
+        <!-- Estados Reingreso-Retorno  -->
+        <item name="android:windowReenterTransition">@transition/fade_transition</item>
+        <item name="android:windowReturnTransition">@transition/fade_transition</item>
     </style>
 </resources>
