@@ -33,10 +33,14 @@ import net.osmtracker.layoutsdesigner.utils.CheckPermissions;
 import net.osmtracker.layoutsdesigner.utils.CustomGridItemAdapter;
 import net.osmtracker.layoutsdesigner.utils.LayoutButtonGridItem;
 import net.osmtracker.layoutsdesigner.utils.XMLGenerator;
+import net.osmtracker.layoutsdesigner.utils.XMLMaker;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
 
 public class Editor extends AppCompatActivity {
 
@@ -61,11 +65,12 @@ public class Editor extends AppCompatActivity {
     private String IMAGE_PATH;
     private TextView sample_url;
     private ImageButton image_button;
+    private XMLMaker maker;
 
     private View current_new_button_popup;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_editor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -94,6 +99,7 @@ public class Editor extends AppCompatActivity {
             boolean cameraCheckbox = extras.getBoolean(OsmtrackerLayoutsDesigner.Preferences.EXTRA_CHECKBOX_CAMERA, false);
             boolean voiceRecorderCheckbox = extras.getBoolean(OsmtrackerLayoutsDesigner.Preferences.EXTRA_CHECKBOX_VOICE_RECORDER, false);
             gridItemsArray = new ArrayList<LayoutButtonGridItem>();
+
             int amountToSubstract = checkIfNeedsDefaultButtons(notesCheckbox, cameraCheckbox, voiceRecorderCheckbox);
             int totalItems = (columnsNum * rowsNum) - amountToSubstract < 0 ? 0 : (columnsNum * rowsNum) - amountToSubstract;
             if((columnsNum * rowsNum) - amountToSubstract < 0){
@@ -157,9 +163,12 @@ public class Editor extends AppCompatActivity {
                     //TODO: SAVE THE LAYOUT (ONLY IF THE PERMISSION TO WRITE IS GRANTED)
                     if(isTotallyFilled()){
                         try {
-
-                            XMLGenerator.generateXML(Editor.this, gridItemsArray, layoutName, rowsNum,columnsNum);
-
+                            maker = new XMLMaker();
+                            maker.createDocumentTemplate();
+                            maker.createRow();
+                            //TODO: CHECK IF THE LAYOUT NAME HAVE BLANK SPACES
+                            maker.writeFile(layoutName+".xml");
+                            System.out.println(maker.convertToString());
 
                             AlertDialog.Builder builder = new AlertDialog.Builder(Editor.this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
                             builder.setTitle(R.string.succesfully_created_title)
@@ -171,8 +180,10 @@ public class Editor extends AppCompatActivity {
                                         }
                                     })
                                     .create().show();
-                        } catch (IOException e) {
+                        } catch (TransformerException e) {
                             Toast.makeText(Editor.this,R.string.error_creating_message, Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        } catch (ParserConfigurationException e) {
                             e.printStackTrace();
                         }
                     }

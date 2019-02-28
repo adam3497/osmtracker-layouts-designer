@@ -122,6 +122,7 @@ public class XMLGenerator {
             Log.e("#", "Directory Created.");
         }
     }
+
     private static boolean isSDCardPresent() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
