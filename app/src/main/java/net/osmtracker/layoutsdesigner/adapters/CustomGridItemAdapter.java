@@ -1,4 +1,4 @@
-package net.osmtracker.layoutsdesigner.utils;
+package net.osmtracker.layoutsdesigner.adapters;
 
 import android.content.Context;
 import android.support.constraint.ConstraintLayout;
@@ -10,6 +10,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import net.osmtracker.layoutsdesigner.R;
+import net.osmtracker.layoutsdesigner.utils.LayoutButtonGridItem;
 
 import java.util.ArrayList;
 

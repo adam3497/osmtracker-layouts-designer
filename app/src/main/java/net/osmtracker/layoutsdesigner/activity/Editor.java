@@ -30,7 +30,7 @@ import android.widget.Toast;
 import net.osmtracker.layoutsdesigner.OsmtrackerLayoutsDesigner;
 import net.osmtracker.layoutsdesigner.R;
 import net.osmtracker.layoutsdesigner.utils.CheckPermissions;
-import net.osmtracker.layoutsdesigner.utils.CustomGridItemAdapter;
+import net.osmtracker.layoutsdesigner.adapters.CustomGridItemAdapter;
 import net.osmtracker.layoutsdesigner.utils.LayoutButtonGridItem;
 import net.osmtracker.layoutsdesigner.utils.XMLGenerator;
 

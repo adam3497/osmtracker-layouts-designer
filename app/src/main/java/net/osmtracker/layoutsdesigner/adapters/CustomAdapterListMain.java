@@ -1,4 +1,4 @@
-package net.osmtracker.layoutsdesigner.utils;
+package net.osmtracker.layoutsdesigner.adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import net.osmtracker.layoutsdesigner.R;
+import net.osmtracker.layoutsdesigner.utils.ItemListMain;
 
 import java.util.ArrayList;
 
