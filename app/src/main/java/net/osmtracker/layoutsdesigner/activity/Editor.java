@@ -32,7 +32,7 @@ import net.osmtracker.layoutsdesigner.R;
 import net.osmtracker.layoutsdesigner.utils.CheckPermissions;
 import net.osmtracker.layoutsdesigner.adapters.CustomGridItemAdapter;
 import net.osmtracker.layoutsdesigner.utils.LayoutButtonGridItem;
-import net.osmtracker.layoutsdesigner.utils.XMLGenerator;
+import net.osmtracker.layoutsdesigner.utils.xmlutils.XMLGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;

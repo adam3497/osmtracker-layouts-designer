@@ -1,4 +1,4 @@
-package net.osmtracker.layoutsdesigner.utils;
+package net.osmtracker.layoutsdesigner.utils.xmlutils;
 
 import android.content.Context;
 import android.os.Environment;
@@ -6,6 +6,8 @@ import android.util.Log;
 import android.util.Xml;
 import net.osmtracker.layoutsdesigner.OsmtrackerLayoutsDesigner;
 import net.osmtracker.layoutsdesigner.R;
+import net.osmtracker.layoutsdesigner.utils.LayoutButtonGridItem;
+
 import org.xmlpull.v1.XmlSerializer;
 import java.io.FileOutputStream;
 import java.io.IOException;

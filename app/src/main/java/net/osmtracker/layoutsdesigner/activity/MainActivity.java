@@ -40,10 +40,19 @@ import net.osmtracker.layoutsdesigner.adapters.CustomMainRecyclerAdapter;
 import net.osmtracker.layoutsdesigner.utils.CheckPermissions;
 import net.osmtracker.layoutsdesigner.utils.CustomLayoutsUtils;
 import net.osmtracker.layoutsdesigner.utils.ItemListMain;
+import net.osmtracker.layoutsdesigner.utils.xmlutils.ReadXmlTask;
+import net.osmtracker.layoutsdesigner.utils.xmlutils.RowXmlObject;
+import net.osmtracker.layoutsdesigner.utils.xmlutils.XMLReader;
+
+import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FilenameFilter;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -54,7 +63,6 @@ public class MainActivity extends AppCompatActivity
     private String contextTAG = OsmtrackerLayoutsDesigner.Preferences.TAG + ".MainActivity";
     private String numberRows;
     private String numberColumns;
-    private static final String TAG = "MainActivity";
     private ArrayList<ItemListMain> items;
     private String storageDir;
     private CustomMainRecyclerAdapter adapter;
@@ -329,6 +337,7 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
+            new ReadXmlTask().execute(Environment.getExternalStorageDirectory() + "/example" + File.separator + "default_buttons_layout.xml");
             return true;
         }
 
@@ -337,7 +346,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
