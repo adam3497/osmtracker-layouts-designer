@@ -96,8 +96,7 @@ public class XMLGenerator {
         serializer.endDocument();
         String result = writer.toString();
 
-        String path = Environment.getExternalStorageDirectory() + OsmtrackerLayoutsDesigner.Preferences.VAL_STORAGE_DIR+
-                File.separator+OsmtrackerLayoutsDesigner.Preferences.LAYOUTS_SUBDIR + File.separator;
+        String path = OsmtrackerLayoutsDesigner.Preferences.LAYOUTS_DIR_PATH;
 
         createDir(path);
 

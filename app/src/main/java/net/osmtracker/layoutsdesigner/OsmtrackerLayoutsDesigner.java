@@ -1,6 +1,9 @@
 package net.osmtracker.layoutsdesigner;
 
 import android.Manifest;
+import android.os.Environment;
+
+import java.io.File;
 
 public class OsmtrackerLayoutsDesigner {
 
@@ -32,6 +35,8 @@ public class OsmtrackerLayoutsDesigner {
         public static final String EXTRA_CHECKBOX_CAMERA = "camera_button";
         public static final String EXTRA_CHECKBOX_VOICE_RECORDER = "voice_recorder_button";
         public static final String EXTRA_CHECKBOX_NOTES = "notes_button";
+        public static final String LAYOUTS_DIR_PATH = Environment.getExternalStorageDirectory() + OsmtrackerLayoutsDesigner.Preferences.VAL_STORAGE_DIR+
+                File.separator+OsmtrackerLayoutsDesigner.Preferences.LAYOUTS_SUBDIR + File.separator;
 
     }
 

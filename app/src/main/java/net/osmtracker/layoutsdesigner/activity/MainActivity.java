@@ -42,16 +42,11 @@ import net.osmtracker.layoutsdesigner.utils.CustomLayoutsUtils;
 import net.osmtracker.layoutsdesigner.utils.ItemListMain;
 import net.osmtracker.layoutsdesigner.utils.xmlutils.ReadXmlTask;
 import net.osmtracker.layoutsdesigner.utils.xmlutils.RowXmlObject;
-import net.osmtracker.layoutsdesigner.utils.xmlutils.XMLReader;
-
-import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public class MainActivity extends AppCompatActivity
@@ -60,7 +55,7 @@ public class MainActivity extends AppCompatActivity
         CustomMainRecyclerAdapter.OnCustomLayoutListener{
 
     private FloatingActionButton fab;
-    private String contextTAG = OsmtrackerLayoutsDesigner.Preferences.TAG + ".MainActivity";
+    private String TAG = OsmtrackerLayoutsDesigner.Preferences.TAG + ".MainActivity";
     private String numberRows;
     private String numberColumns;
     private ArrayList<ItemListMain> items;
@@ -105,7 +100,7 @@ public class MainActivity extends AppCompatActivity
         //verify if the permission to READ storage are granted
         if(CheckPermissions.isPermissionDenied(MainActivity.this, OsmtrackerLayoutsDesigner.Preferences.READ_STORAGE_PERMISSION)){
 
-            Log.i(contextTAG, "Permission to read storage denied");
+            Log.i(TAG, "Permission to read storage denied");
 
             //if the permission was denied by the user we push a dialog with a explanation message
             if(CheckPermissions.needsToExplainToUser(MainActivity.this, OsmtrackerLayoutsDesigner.Preferences.READ_STORAGE_PERMISSION)){
@@ -117,14 +112,14 @@ public class MainActivity extends AppCompatActivity
                 builder.setPositiveButton(getResources().getString(R.string.dialog_accept), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i(contextTAG, "User accept the message");
+                        Log.i(TAG, "User accept the message");
                         CheckPermissions.makePermissionRequest(MainActivity.this, OsmtrackerLayoutsDesigner.Preferences.READ_STORAGE_PERMISSION,
                                 OsmtrackerLayoutsDesigner.Preferences.READ_STORAGE_PERMISSION_REQUEST_CODE);
                     }
                 }).setNegativeButton(getResources().getString(R.string.dialog_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
-                        Log.i(contextTAG, "User declined to accept the permission");
+                        Log.i(TAG, "User declined to accept the permission");
                         Snackbar snackbar = Snackbar.make(fab, getResources().getString(R.string.permission_grant_settings), Snackbar.LENGTH_LONG)
                                 .setAction(getResources().getString(R.string.snackbar_permission_request_denied_action), new View.OnClickListener() {
                                     @Override
@@ -156,10 +151,10 @@ public class MainActivity extends AppCompatActivity
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         if (requestCode == OsmtrackerLayoutsDesigner.Preferences.READ_STORAGE_PERMISSION_REQUEST_CODE) {
             if (grantResults.length == 0 || grantResults[0] != PackageManager.PERMISSION_GRANTED) {
-                Log.i(contextTAG, "The permission to read was denied by the user");
+                Log.i(TAG, "The permission to read was denied by the user");
                 Snackbar.make(fab, getResources().getString(R.string.permission_read_storage_denied), Snackbar.LENGTH_LONG).show();
             } else {
-                Log.i(contextTAG, "The permission to read was granted");
+                Log.i(TAG, "The permission to read was granted");
                 refreshActivity();
             }
         }
@@ -195,14 +190,19 @@ public class MainActivity extends AppCompatActivity
             //fill the array with the layouts founded
             items = new ArrayList<ItemListMain>();
             for(String fileName :  layoutFiles){
-                items.add(new ItemListMain(CustomLayoutsUtils.convertFileName(fileName), ""));
+                items.add(new ItemListMain(CustomLayoutsUtils.convertFileName(fileName), "", fileName));
             }
         }
     }
 
     @Override
     public void onCustomLayoutClick(int position) {
-        Toast.makeText(this, "You press the item " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "You press the item " + items.get(position).getLayoutFileName(), Toast.LENGTH_SHORT).show();
+        Intent editLayoutIntent = new Intent(MainActivity.this, EditLayout.class);
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("item", items.get(position));
+        editLayoutIntent.putExtras(bundle);
+        startActivity(editLayoutIntent);
     }
 
     public void showPopup(){
@@ -337,7 +337,6 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
-            new ReadXmlTask().execute(Environment.getExternalStorageDirectory() + "/example" + File.separator + "default_buttons_layout.xml");
             return true;
         }
 

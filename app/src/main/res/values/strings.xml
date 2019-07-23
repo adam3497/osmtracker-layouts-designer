@@ -71,5 +71,6 @@
 
     <!--Others-->
     <string name="EMPTY"> </string>
+    <string name="title_activity_edit_layout">Edit Layout</string>
 
 </resources>

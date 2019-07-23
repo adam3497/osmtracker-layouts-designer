@@ -25,7 +25,7 @@ public class XMLReader {
      * @throws XmlPullParserException
      * @throws IOException
      */
-    public static void parse(InputStream in) throws XmlPullParserException, IOException {
+    public static Hashtable<String, ArrayList<RowXmlObject>> parse(InputStream in) throws XmlPullParserException, IOException {
         Log.i(TAG, "parse: making the parser object");
         try {
             XmlPullParser parser = Xml.newPullParser();
@@ -34,7 +34,7 @@ public class XMLReader {
             parser.nextTag();
             Log.i(TAG, "parse: calling the recursive methods to get the data from the custom buttons layout");
             //TODO: CHANGE THE METHOD TO RETURN THE HASH
-            readLayoutsTag(parser);
+            return readLayoutsTag(parser);
         } finally {
             in.close();
         }
@@ -49,7 +49,7 @@ public class XMLReader {
      * @throws IOException
      * @throws XmlPullParserException
      */
-    private static void readLayoutsTag(XmlPullParser parser)
+    private static Hashtable<String, ArrayList<RowXmlObject>> readLayoutsTag(XmlPullParser parser)
             throws IOException, XmlPullParserException {
 
         Hashtable<String, ArrayList<RowXmlObject>> layoutXmlHash = new Hashtable<>();
@@ -67,6 +67,7 @@ public class XMLReader {
             }
             eventType = parser.next();
         }
+        return layoutXmlHash;
     }
 
     /**
