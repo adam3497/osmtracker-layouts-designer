@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import net.osmtracker.layoutsdesigner.OsmtrackerLayoutsDesigner;
 import net.osmtracker.layoutsdesigner.R;
+import net.osmtracker.layoutsdesigner.utils.GridViewLayoutManager;
 import net.osmtracker.layoutsdesigner.utils.ItemListMain;
 import net.osmtracker.layoutsdesigner.utils.xmlutils.ReadXmlTask;
 import net.osmtracker.layoutsdesigner.utils.xmlutils.RowXmlObject;
@@ -73,6 +74,8 @@ public class EditLayout extends AppCompatActivity {
         while(hashKeys.hasMoreElements()){
             Log.i(TAG, "printHashInfo: current key: " + hashKeys.nextElement() + "\n");
         }
+        GridViewLayoutManager manager = new GridViewLayoutManager(this);
+        manager.showGridView(hash.get("root"));
         //loadingProgressBar.setVisibility(View.GONE);
     }
 

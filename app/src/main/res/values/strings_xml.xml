@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="xml_default_button_voicerec">Voice Record</string>
+    <string name="xml_default_button_textnote">Text Note</string>
+    <string name="xml_default_button_picture">Take Photo</string>
+</resources>
